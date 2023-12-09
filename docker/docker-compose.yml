@@ -1,0 +1,21 @@
+version: "3.8"
+volumes:
+  data:
+services:
+  postgres:
+    networks:
+      contacts-network:
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "123"
+      POSTGRES_DB: "contacts"
+      POSTGRES_SCHEMA: "contacts_schema"
+    volumes:
+      - data:/var/lib/postgresql/data
+      - ./contact.sql:/docker-entrypoint-initdb.d/contact.sql
+networks:
+  contacts-network:
