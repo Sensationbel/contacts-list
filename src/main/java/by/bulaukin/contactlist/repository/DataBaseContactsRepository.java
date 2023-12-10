@@ -26,6 +26,7 @@ public class DataBaseContactsRepository implements ContactsRepository{
         log.debug("DataBaseContactsRepository -> findAll");
 
         String sql = "SELECT * FROM contact";
+
         return jdbcTemplate.query(sql, new ContactRowMapper());
     }
 
@@ -33,6 +34,7 @@ public class DataBaseContactsRepository implements ContactsRepository{
     public Optional<Contact> findById(long id) {
         log.debug("Colling DataBaseContactsRepository: -> findById with ID: {}", id);
         String sql = "SELECT * FROM contact WHERE id = ?";
+
         Contact contact = DataAccessUtils.singleResult(
                 jdbcTemplate.query(
                         sql,
@@ -40,6 +42,7 @@ public class DataBaseContactsRepository implements ContactsRepository{
                         new RowMapperResultSetExtractor<>(new ContactRowMapper(), 1)
                 )
         );
+
         return Optional.ofNullable(contact);
     }
 
@@ -47,8 +50,15 @@ public class DataBaseContactsRepository implements ContactsRepository{
     public Contact save(Contact contact) {
         log.debug("Colling DataBaseContactsRepository: -> save with contact: {}", contact);
         contact.setId(System.currentTimeMillis());
-        String sql = "INSERT INTO contact (firstName, lastName, email, phone) VALUES ( ?, ?, ?, ? )";
-        jdbcTemplate.update(sql, contact.getFirstName(), contact.getLastName(), contact.getEmail(), contact.getPhone());
+
+        String sql = "INSERT INTO contact (firstName, lastName, email, phone, id) VALUES ( ?, ?, ?, ?, ? )";
+
+        jdbcTemplate.update(sql, contact.getFirstName()
+                , contact.getLastName()
+                , contact.getEmail()
+                , contact.getPhone()
+                , contact.getId());
+
         return contact;
     }
 
@@ -63,6 +73,7 @@ public class DataBaseContactsRepository implements ContactsRepository{
                                     , contact.getEmail()
                                     , contact.getPhone()
                                     , contact.getId());
+
             return contact;
         }
 
@@ -72,9 +83,8 @@ public class DataBaseContactsRepository implements ContactsRepository{
     }
 
     @Override
-    public void deleteBYId(int id) {
+    public void deleteBYId(long id) {
         log.debug("Colling DataBaseContactsRepository: -> delete() with ID: {}", id);
-
         String sql = "DELETE FROM contact WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }

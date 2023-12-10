@@ -11,5 +11,5 @@ public interface ContactsRepository {
     Optional<Contact> findById(long id);
     Contact save(Contact contact);
     Contact update(Contact contact);
-    void deleteBYId(int id);
+    void deleteBYId(long id);
 }

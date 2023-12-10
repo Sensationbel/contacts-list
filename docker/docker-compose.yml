@@ -3,12 +3,12 @@ volumes:
   data:
 services:
   postgres:
-    networks:
-      contacts-network:
+#    networks:
+#      contacts-network:
     image: postgres:latest
     restart: always
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "123"
@@ -16,6 +16,6 @@ services:
       POSTGRES_SCHEMA: "contacts_schema"
     volumes:
       - data:/var/lib/postgresql/data
-      - ./contact.sql:/docker-entrypoint-initdb.d/contact.sql
-networks:
-  contacts-network:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+#networks:
+#  contacts-network:

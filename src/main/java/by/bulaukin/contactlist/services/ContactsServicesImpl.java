@@ -43,7 +43,7 @@ public class ContactsServicesImpl implements ContactsServices{
     }
 
     @Override
-    public void deleteBYId(int id) {
+    public void deleteBYId(long id) {
         log.debug("Call delete in ContactsRepository");
 
         contactsRepository.deleteBYId(id);
